@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const Dropdown  = ({ options, selected,  onSelectedChange }) => {
 
     const [open, setOpen] = useState(false);
-
+    const ref = useRef();
     useEffect(() => {
-        document.body.addEventListener('click', () =>{
-            console.log('BODY CLICK!');
+        document.body.addEventListener('click', (event) =>{
+            console.log(event.target);
             setOpen(false);
         });
     }, []);
@@ -18,26 +18,20 @@ const Dropdown  = ({ options, selected,  onSelectedChange }) => {
         <div 
         key ={option.value} 
         className="item"
-        onClick ={ () => {
-            console.log('ITEM CLICKED');
-            onSelectedChange(option)
-            }}
+        onClick ={ () =>
+            onSelectedChange(option)}
         >
             {option.label}
         </div>
     );
 });
-
+    console.log(ref.current);
     return (
-        <div className="ui form">
+        <div ref={ref} className="ui form">
             <div className= "field">
                 <label className="label">Select a Color</label>
                 <div 
-                onClick={() => {
-                    console.log('DROPDOWN CLICKED')
-                    setOpen(!open)
-
-                }} 
+                onClick={() => setOpen(!open)} 
                 className={`ui selection dropdown ${open ? 'visible active' : '' }`}
                 >
                     <i className="dropdown icon"></i>
