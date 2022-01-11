@@ -6,7 +6,6 @@ const Dropdown  = ({ options, selected,  onSelectedChange }) => {
     const ref = useRef();
 
     useEffect(() => {
-
         const onBodyClick = (event) => {
             if(ref.current.conatins(event.target)) {
                 return;
@@ -14,10 +13,8 @@ const Dropdown  = ({ options, selected,  onSelectedChange }) => {
 
             setOpen(false);
         };
-
         document.body.addEventListener('click', onBodyClick);
         
-
         return () => {
             document.body.removeEventListener('click', onBodyClick);
         };
