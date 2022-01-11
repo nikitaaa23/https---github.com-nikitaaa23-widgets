@@ -4,12 +4,25 @@ const Dropdown  = ({ options, selected,  onSelectedChange }) => {
 
     const [open, setOpen] = useState(false);
     const ref = useRef();
+
     useEffect(() => {
-        document.body.addEventListener('click', (event) =>{
-            console.log(event.target);
+
+        const onBodyClick = (event) => {
+            if(ref.current.conatins(event.target)) {
+                return;
+            }
+
             setOpen(false);
-        });
+        };
+
+        document.body.addEventListener('click', onBodyClick);
+        
+
+        return () => {
+            document.body.removeEventListener('click', onBodyClick);
+        };
     }, []);
+
     const renderedOptions = options.map ((option) => {
     if(option.value === selected.value){
         return null;
@@ -18,14 +31,13 @@ const Dropdown  = ({ options, selected,  onSelectedChange }) => {
         <div 
         key ={option.value} 
         className="item"
-        onClick ={ () =>
-            onSelectedChange(option)}
+        onClick ={ () => onSelectedChange(option)}
         >
             {option.label}
         </div>
     );
 });
-    console.log(ref.current);
+
     return (
         <div ref={ref} className="ui form">
             <div className= "field">
