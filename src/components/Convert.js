@@ -3,13 +3,24 @@ import axios from 'axios';
 
 const Convert = ({langauge, text}) => {
 const [translated, setTranslated] = useState('');
+const [deboucedText, setDebouncedText] = useState(text);
+
+useEffect(() => {
+    const timerId = setTimeout(() => {
+        setDebouncedText(text);
+    }, 500);
+
+    return () => {
+        clearTimeout(timerId);
+    };
+}, [text]);
 
     useEffect(() => {
 const doTranslation = async () => {
     const {data} = await axios.post(
         'https://translation.googleapis.com/language/translate/v2', {}, {
         params: {
-            q: text,
+            q: deboucedText,
             target: langauge.value,
             key: 'AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM'
         },
@@ -20,7 +31,7 @@ const doTranslation = async () => {
     };
 
     doTranslation();
-}, [langauge, text]);
+}, [langauge, deboucedText]);
 
     return (
     <div >
